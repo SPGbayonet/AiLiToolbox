@@ -30,6 +30,16 @@ public enum DateType {
     /// - 2天到9天显示如（五天前 20：34），
     /// - 9天以上显示如（02-28 19:15）
     case detail
+    /// 明细（钱包）
+    /// - eg:2017-06-07 16:07:27
+    /// - 今天内显示     今天\n06.07
+    /// - -1天内显示     昨天\n06.07
+    /// - -2天内显示     前天\n06.07
+    /// - 其他时间显示    星期三\n06.07
+    case wallet
+    /// 明细详情（钱包）
+    /// - 2017-06-07 16:00 转换成 2017-06-07 星期三 16:00
+    case walletdetail
 }
 
 public class TSDate: NSObject {
@@ -90,6 +100,10 @@ public class TSDate: NSObject {
             dateString = normalDate()
         case .detail:
             dateString = detailDate()
+        case .wallet:
+            dateString = comparingToday(date)
+        case .walletdetail:
+            dateString = convertToWeekday(date)
         }
         return dateString
     }
@@ -207,5 +221,49 @@ public class TSDate: NSObject {
     /// 将 NSDate 转换成 Date
     private func convertToDate(_ nsDate: NSDate) -> Date {
         return Date(timeIntervalSince1970: nsDate.timeIntervalSince1970)
+    }
+    /// 根据 Date 转换成带星期几的字符串
+    private func convertToWeekday(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat =  "yyyy-MM-dd eeee HH:mm"
+        let string = dateFormatter.string(for: date)!
+        return string
+    }
+
+    /// 根据 Date 返回 星期几+月日
+    private func comparingToday(_ date: Date) -> String {
+        
+        let today = Date()
+        let getday = date
+
+        let deFormatter = DateFormatter()
+        deFormatter.dateFormat = "EEEE\nMM.dd"
+
+        let calendar = Calendar.current
+        let todaycompes = calendar.dateComponents([.year, .month, .day], from: today)
+        let getdaycompes = calendar.dateComponents([.year, .month, .day], from: getday)
+
+        let  Dvalue = getdaycompes.day! - todaycompes.day!
+
+        if (todaycompes.year == getdaycompes.year) && (todaycompes.month == getdaycompes.month) {
+            switch Dvalue {
+            case 0:
+                // 今天
+                deFormatter.dateFormat = "MM.dd"
+                return "今天\n\(deFormatter.string(from: getday))"
+            case -1:
+                // 昨天
+                deFormatter.dateFormat = "MM.dd"
+                return "昨天\n\(deFormatter.string(from: getday))"
+            case -2:
+                // 前天
+                deFormatter.dateFormat = "MM.dd"
+                return "前天\n\(deFormatter.string(from: getday))"
+            default:
+
+                return deFormatter.string(from: getday)
+            }
+        }
+        return deFormatter.string(from: getday)
     }
 }
