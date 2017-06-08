@@ -100,13 +100,30 @@ public class TSDate: NSObject {
             dateString = normalDate()
         case .detail:
             dateString = detailDate()
-        case .wallet:
-            dateString = comparingToday(date)
-        case .walletdetail:
-            dateString = convertToWeekday(date)
+        default:
+        break
         }
         return dateString
     }
+    
+    
+    public func weekdateString(_ type: DateType, json: Date, user: Date) -> String{
+        var dateString = ""
+        switch type {
+        case .wallet:
+            dateString = comparingToday(json, user: user)
+        case .walletdetail:
+            dateString = convertToWeekday(json)
+        default:
+            break
+        }
+        return dateString
+    }
+    
+    
+    
+    
+    
 
     /// 转换成时间
     ///
@@ -231,17 +248,26 @@ public class TSDate: NSObject {
     }
 
     /// 根据 Date 返回 星期几+月日
-    private func comparingToday(_ date: Date) -> String {
-        
-        let today = Date()
-        let getday = date
+    private func comparingToday(_ json: Date, user: Date) -> String {
 
+        let getjson = json
+        let getuser = user
         let deFormatter = DateFormatter()
         deFormatter.dateFormat = "EEEE\nMM.dd"
+//        // 设置系统时区为本地时区
+//        let zone = NSTimeZone.system
+//        
+//        // 计算本地时区与 GMT 时区的时间差
+//        let second:Int = zone.secondsFromGMT()
+//        
+//        // 在 GMT 时间基础上追加时间差值，得到本地时间
+//        
+//        today = today.addingTimeInterval(TimeInterval(second))
+//        getday = getday.addingTimeInterval(TimeInterval(second))
 
         let calendar = Calendar.current
-        let todaycompes = calendar.dateComponents([.year, .month, .day], from: today)
-        let getdaycompes = calendar.dateComponents([.year, .month, .day], from: getday)
+        let todaycompes = calendar.dateComponents([.year, .month, .day], from: getuser)
+        let getdaycompes = calendar.dateComponents([.year, .month, .day], from: getjson)
 
         let  Dvalue = getdaycompes.day! - todaycompes.day!
 
@@ -250,20 +276,19 @@ public class TSDate: NSObject {
             case 0:
                 // 今天
                 deFormatter.dateFormat = "MM.dd"
-                return "今天\n\(deFormatter.string(from: getday))"
+                return "今天\n\(deFormatter.string(from: getjson))"
             case -1:
                 // 昨天
                 deFormatter.dateFormat = "MM.dd"
-                return "昨天\n\(deFormatter.string(from: getday))"
+                return "昨天\n\(deFormatter.string(from: getjson))"
             case -2:
                 // 前天
                 deFormatter.dateFormat = "MM.dd"
-                return "前天\n\(deFormatter.string(from: getday))"
+                return "前天\n\(deFormatter.string(from: getjson))"
             default:
-
                 break
             }
         }
-        return deFormatter.string(from: getday)
+        return deFormatter.string(from: getjson)
     }
 }

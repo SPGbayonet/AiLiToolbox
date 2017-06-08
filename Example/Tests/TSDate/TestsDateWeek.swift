@@ -16,13 +16,24 @@ class TestsDateWeek: TestsDate {
         resetTimes()
         describe("传入五个不同的值") {
 
-            let oneString = TSDate().dateString(.wallet, nsDate: today as NSDate)//同年同月同日
-            let twoString = TSDate().dateString(.wallet, nsDate: Yesterday as NSDate)//同年同月少一日
-            let threeString = TSDate().dateString(.wallet, nsDate: toyesterday as NSDate)//同年同月少二日
-            let fourString = TSDate().dateString(.wallet, nsDate: otherday as NSDate)//同年同月少三日，走brek
-            let fiveString = TSDate().dateString(.wallet, nsDate: weekday as NSDate)//同年不月，直接return
+            let formatter = DateFormatter()
+            formatter.dateFormat = "YYYY-MM-dd HH:mm:ss"
 
-            let sixString = TSDate().dateString(.walletdetail, nsDate: weekday as NSDate)
+            let today = formatter.date(from: "2017-06-08 17:48:05")!
+            let yesterday = today.addingTimeInterval(TimeInterval(-24 * 60 * 60))
+            let toyesterday = yesterday.addingTimeInterval(TimeInterval(-24 * 60 * 60))
+            let otherday = toyesterday.addingTimeInterval(TimeInterval(-24 * 60 * 60))
+
+            let weekday = formatter.date(from: "2017-05-09 10:04:30")!
+
+            let oneString = TSDate().weekdateString(.wallet, json: today, user: today)//同年同月同日
+            let twoString = TSDate().weekdateString(.wallet, json: yesterday, user: today)//同年同月少一日
+            let threeString = TSDate().weekdateString(.wallet, json: toyesterday, user: today)//同年同月少二日
+            let fourString = TSDate().weekdateString(.wallet, json: otherday, user: today)//同年同月少三日，走brek
+
+            let fiveString = TSDate().weekdateString(.wallet, json: weekday, user: today)//同年不月，直接return
+
+            let sixString = TSDate().weekdateString(.walletdetail, json: weekday, user: today)
             it("进行输出比较") {
                 let today = "今天\n06.08"
                 let yesterday = "昨天\n06.07"
