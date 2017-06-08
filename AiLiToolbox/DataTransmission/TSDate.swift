@@ -115,7 +115,7 @@ public class TSDate: NSObject {
         case .walletdetail:
             dateString = convertToWeekday(json)
         default:
-            break
+            return dateString
         }
         return dateString
     }
