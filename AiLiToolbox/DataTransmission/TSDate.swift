@@ -59,8 +59,6 @@ public class TSDate: NSObject {
     private var oneMinute = Date()
     /// 一小时前
     private var oneHour = Date()
-    ///
-    private var egdate = Date()
     /// 格式转换器
     private let formatter = DateFormatter()
 
@@ -82,10 +80,6 @@ public class TSDate: NSObject {
         nightday = calendar.date(byAdding: Calendar.Component.day, value: -9, to: today, wrappingComponents: false)!
         oneMinute = calendar.date(byAdding: Calendar.Component.minute, value: -1, to: now, wrappingComponents: false)!
         oneHour = calendar.date(byAdding: Calendar.Component.hour, value: -1, to: now, wrappingComponents: false)!
-        let df = DateFormatter()
-            df.dateFormat = "YYYY-MM-dd HH:mm:ss"
-        egdate = df.date(from: "2017-06-07 16:44:33")!
-
     }
 
     // MARK: - Public
@@ -107,7 +101,7 @@ public class TSDate: NSObject {
         case .detail:
             dateString = detailDate()
         case .wallet:
-            dateString = comparingToday(date, to: egdate)
+            dateString = comparingToday(date)
         case .walletdetail:
             dateString = convertToWeekday(date)
         }
@@ -237,9 +231,9 @@ public class TSDate: NSObject {
     }
 
     /// 根据 Date 返回 星期几+月日
-    private func comparingToday(_ date: Date, to: Date) -> String {
-
-        let today = to
+    private func comparingToday(_ date: Date) -> String {
+        
+        let today = Date()
         let getday = date
 
         let deFormatter = DateFormatter()
@@ -267,7 +261,7 @@ public class TSDate: NSObject {
                 return "前天\n\(deFormatter.string(from: getday))"
             default:
 
-                return deFormatter.string(from: getday)
+                break
             }
         }
         return deFormatter.string(from: getday)

@@ -26,12 +26,13 @@ class TestsDate: QuickSpec {
     var nineDay = Date()
     /// 9天以上的时间
     var nineDayMore = Date()
-    
-    var egday = Date()
-    var today = Date()
+
+    var today = Date()//今天
     var Yesterday = Date()
     var toyesterday = Date()
     var otherday = Date()
+
+    var weekday = Date()
 
     /// 重置时间
     func resetTimes() {
@@ -45,11 +46,13 @@ class TestsDate: QuickSpec {
         nineDay = formatter.date(from: "2017-05-09 10:04:30")!
         nineDayMore = formatter.date(from: "2016-10-01 10:04:30")!
 
-        egday = formatter.date(from: "2017-06-07 16:44:33")!
-        today = formatter.date(from: "2017-06-07 16:44:33")!
-        Yesterday = formatter.date(from: "2017-06-06 16:44:33")!
-        toyesterday = formatter.date(from: "2017-06-05 16:44:33")!
-        otherday = formatter.date(from: "2017-05-09 10:04:30")!
+        today = formatter.date(from: "2017-06-08 16:44:33")!
+        Yesterday = formatter.date(from: "2017-06-07 16:44:33")!
+        toyesterday = formatter.date(from: "2017-06-06 16:44:33")!
+        otherday = formatter.date(from: "2017-06-05 10:04:30")!
+
+
+        weekday = formatter.date(from: "2017-05-09 10:04:30")!
     }
 
     override func spec() {
