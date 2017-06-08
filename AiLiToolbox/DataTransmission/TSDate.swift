@@ -105,9 +105,8 @@ public class TSDate: NSObject {
         }
         return dateString
     }
-    
-    
-    public func weekdateString(_ type: DateType, json: Date, user: Date) -> String{
+
+        public func weekdateString(_ type: DateType, json: Date, user: Date) -> String {
         var dateString = ""
         switch type {
         case .wallet:
@@ -119,11 +118,6 @@ public class TSDate: NSObject {
         }
         return dateString
     }
-    
-    
-    
-    
-    
 
     /// 转换成时间
     ///
