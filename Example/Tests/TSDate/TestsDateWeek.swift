@@ -33,7 +33,11 @@ class TestsDateWeek: TestsDate {
 
             let fiveString = TSDate().weekdateString(.wallet, json: weekday, user: today)//同年不月，直接return
 
-            let sixString = TSDate().weekdateString(.walletdetail, json: weekday, user: today)
+            let sixString = TSDate().weekdateString(.walletdetail, json: weekday, user: today)//转换带有星期几的字符串
+
+            //测试方法中default情况
+            let datestringV = TSDate().dateString(.wallet, nsDate: today as NSDate)
+            let weekstringV = TSDate().weekdateString(.detail, json: today, user: today)
             it("进行输出比较") {
                 let today = "今天\n06.08"
                 let yesterday = "昨天\n06.07"
@@ -42,6 +46,10 @@ class TestsDateWeek: TestsDate {
                 let moredaystring = "Tuesday\n05.09"
 
                 let weekdaystring = "2017-05-09 Tuesday 10:04"
+
+                let dateV = ""
+                let weekV = ""
+
                 expect(oneString) == today
                 expect(twoString) == yesterday
                 expect(threeString) == nineDayAnswer
@@ -49,6 +57,9 @@ class TestsDateWeek: TestsDate {
                 expect(fiveString) == moredaystring
 
                 expect(sixString) == weekdaystring
+
+                expect(datestringV) == dateV
+                expect(weekstringV) == weekV
             }
         }
     }

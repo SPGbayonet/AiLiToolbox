@@ -101,7 +101,7 @@ public class TSDate: NSObject {
         case .detail:
             dateString = detailDate()
         default:
-        break
+            break
         }
         return dateString
     }
@@ -114,7 +114,7 @@ public class TSDate: NSObject {
         case .walletdetail:
             dateString = convertToWeekday(json)
         default:
-            return dateString
+            break
         }
         return dateString
     }
@@ -241,30 +241,20 @@ public class TSDate: NSObject {
         return string
     }
 
-    /// 根据 Date 返回 星期几+月日
+    /// 根据 Date 返回 周几+月日
     private func comparingToday(_ json: Date, user: Date) -> String {
 
-        let getjson = json
-        let getuser = user
+        let getjson = json//拿到后台数据
+        let getuser = user//拿到对比数据
         let deFormatter = DateFormatter()
-        deFormatter.dateFormat = "EEEE\nMM.dd"
-//        // 设置系统时区为本地时区
-//        let zone = NSTimeZone.system
-//        
-//        // 计算本地时区与 GMT 时区的时间差
-//        let second:Int = zone.secondsFromGMT()
-//        
-//        // 在 GMT 时间基础上追加时间差值，得到本地时间
-//        
-//        today = today.addingTimeInterval(TimeInterval(second))
-//        getday = getday.addingTimeInterval(TimeInterval(second))
+        deFormatter.dateFormat = "EEEE\nMM.dd"// 转换格式
 
-        let calendar = Calendar.current
+        let calendar = Calendar.current//拆分date，年/月/日
         let todaycompes = calendar.dateComponents([.year, .month, .day], from: getuser)
         let getdaycompes = calendar.dateComponents([.year, .month, .day], from: getjson)
 
         let  Dvalue = getdaycompes.day! - todaycompes.day!
-
+        // 年月日相同时进行比较输出
         if (todaycompes.year == getdaycompes.year) && (todaycompes.month == getdaycompes.month) {
             switch Dvalue {
             case 0:
@@ -280,6 +270,7 @@ public class TSDate: NSObject {
                 deFormatter.dateFormat = "MM.dd"
                 return "前天\n\(deFormatter.string(from: getjson))"
             default:
+                // 超过前天的跳过出去直接输出
                 break
             }
         }
